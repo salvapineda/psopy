@@ -1,9 +1,9 @@
 from powpy import system
 
-sys1 = system(gen_file='data/gen3bus.csv',
-              lin_file='data/lin3bus.csv',
-              dem_file='data/dem3bus.csv',
-              ren_file='data/ren3bus.csv',
+sys1 = system(gen_file='3bus/gen.csv',
+              lin_file='3bus/lin.csv',
+              dem_file='3bus/dem.csv',
+              ren_file='3bus/ren.csv',
               shed_cost=1000)
 
 sys1.solve(solver='cplex',

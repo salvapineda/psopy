@@ -1,4 +1,4 @@
-from powpy import system
+from code import system
 
 sys1 = system(gen_file='3bus/gen.csv',
               lin_file='3bus/lin.csv',

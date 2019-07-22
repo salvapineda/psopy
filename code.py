@@ -108,7 +108,6 @@ class system:
         print(res['Solver'][0])
 
         #We save the results
-        self.time = res['Solver'][0]['Time']
         self.output = m
         self.prod = pyomo2df(m.pro,m.g,m.t).T
         self.stat = pyomo2df(m.u,m.g,m.t).T

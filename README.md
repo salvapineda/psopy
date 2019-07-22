@@ -18,7 +18,7 @@ To use it follow the following steps:
 ```
 from code import system
 sys1 = system('3bus')
-sys1.solve(solver='cplex',neos=False,network=True,commit=True)
+sys1.solve(solver='cplex',neos=True,network=True,commit=True)
 ```
 4. Results are placed in the result folder. These results include the unit power production for each time period (prod.csv) and the power flows through the transmission lines for each time period (flow.csv)
 

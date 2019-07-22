@@ -1,11 +1,5 @@
 from code import system
 
-#sys1 = system(gen_file='3bus/gen.csv',
-#              lin_file='3bus/lin.csv',
-#              dem_file='3bus/dem.csv',
-#              ren_file='3bus/ren.csv',
-#              shed_cost=1000)
-
 sys1 = system('3bus')
 
 sys1.solve(solver='cplex',

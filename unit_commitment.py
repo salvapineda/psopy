@@ -1,16 +1,51 @@
+'''
+This Python code solves a multi-period network-constrained unit-commitment problem as a mixed-integer linear programming problem.
+
+The power system data must be provided using a .xlsx file with four different sheets:
+- gen: thermal unit data (location, cost, minimum and maximum output)
+- lin: line transmission data (susceptance and capacity)
+- dem: electricity demand at each node for each time period
+- ren: renewable electricity production at each node for each time period
+
+Results are provided in file output.xlsx. These results include the unit power production, unit commitment, power flows through the transmission lines, shed load and spilage of renewable production for each time period
+
+The options of the solve function are:
+- solver (default=CPLEX): the mixed-integer optimization software used to solve the model
+- neos (default=True): it allows the access to the solvers hosted in the NEOS server. More info [here](https://neos-server.org/neos/)
+- network (default=True): If True, the model is solved considering the network constraints. If False, the model is solved assuming that network congestion does not occur.
+- commit (default=True): If True, binary variables are used to model the on/off status of thermal units. If False, the minimum output of thermal units are disregarded and the model is solved as a linear model.
+'''
+
+############################ IMPORT ############################
+
 import pdb
 import pandas as pd
 import numpy as np
 import pyomo.environ as pe
 
+############################ MAIN ############################
+
+def main():
+
+  # load system data
+  sys1 = system('3bus.xlsx',shed_cost=1000)
+
+  # solve unit commitment
+  sys1.solve(solver='cplex',neos=True,network=True,commit=True)
+
+############################ CODE ############################
+
 class system:
 
-    def __init__(self,folder,shed_cost=1000):
+    def __init__(self,file_data,shed_cost=1000):
 
-        self.gen = pd.read_csv(folder+'/gen.csv')
-        self.lin = pd.read_csv(folder+'/lin.csv')
-        self.dem = pd.read_csv(folder+'/dem.csv')
-        self.ren = pd.read_csv(folder+'/ren.csv')
+        self.file_data = file_data
+
+        self.gen = pd.read_excel(file_data,sheet_name='gen')
+        self.lin = pd.read_excel(file_data,sheet_name='lin')
+        self.dem = pd.read_excel(file_data,sheet_name='dem')
+        self.ren = pd.read_excel(file_data,sheet_name='ren')
+
         self.ng = len(self.gen)
         self.nl = len(self.lin)
         self.nb = self.dem.shape[1]
@@ -108,20 +143,15 @@ class system:
         print(res['Solver'][0])
 
         #We save the results
-        self.output = m
-        self.prod = pyomo2df(m.pro,m.g,m.t).T
-        self.stat = pyomo2df(m.u,m.g,m.t).T
-        self.flow = pyomo2df(m.flw,m.l,m.t).T
-        self.shed = pyomo2df(m.shd,m.b,m.t).T
-        self.spil = pyomo2df(m.spl,m.b,m.t).T
-        self.prod.to_csv('results/prod.csv',index=False)
-        self.flow.to_csv('results/flow.csv',index=False)
+        with pd.ExcelWriter(self.file_data[:-5]+'_output.xlsx') as writer:
+            pd.DataFrame([[round(m.pro[g,t].value,2) for t in m.t] for g in m.g]).T.to_excel(writer,'pro')
+            pd.DataFrame([[round(m.u[g,t].value,2) for t in m.t] for g in m.g]).T.to_excel(writer,'u')
+            pd.DataFrame([[round(m.flw[l,t].value,2) for t in m.t] for l in m.l]).T.to_excel(writer,'flw')
+            pd.DataFrame([[round(m.shd[b,t].value,2) for t in m.t] for b in m.b]).T.to_excel(writer,'shd')
+            pd.DataFrame([[round(m.spl[b,t].value,2) for t in m.t] for b in m.b]).T.to_excel(writer,'spl')
 
-def pyomo2df(pyomo_var,index1,index2,dec=2):
-    mat = []
-    for i in index1:
-        row = []
-        for j in index2:
-            row.append(round(pyomo_var[i,j].value,dec))
-        mat.append(row)
-    return pd.DataFrame(mat)
+############################ RUN ############################
+
+if __name__ == '__main__':
+    main()
+

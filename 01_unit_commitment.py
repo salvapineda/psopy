@@ -28,7 +28,7 @@ import pyomo.environ as pe
 def main():
 
   # load system data
-  sys1 = system('3bus.xlsx',shed_cost=1000)
+  sys1 = system('data/3bus.xlsx',shed_cost=1000)
 
   # solve unit commitment
   sys1.solve(solver='cplex',neos=True,network=True,commit=True)

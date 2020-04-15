@@ -16,7 +16,7 @@ from sklearn.metrics.pairwise import pairwise_distances
 def main():
 
   #load wind time series
-  ts1 = time_serie('wind1.xlsx')
+  ts1 = time_serie('data/wind1.xlsx')
 
   #time series is aggregated
   ts1.agg(48,method='days')

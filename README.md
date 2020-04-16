@@ -6,6 +6,8 @@ This repository includes Python codes for different power system related problem
 
 ```python
 git clone https://github.com/salvapineda/psopy.git
+
+cd psopy
 ```
 
 ## Unit Commitment

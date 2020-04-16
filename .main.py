@@ -25,7 +25,7 @@ if code=='time_aggregation':
   ts1 = time_serie('data/wind1.xlsx')
 
   # time series is aggregated
-  ts1.agg(48,method='days')
+  ts1.agg(48,method='chrono')
 
   # aggregated time series is plotted
   ts1.plot(1,168)

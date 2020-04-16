@@ -1,18 +1,10 @@
-# Power System Optimization in PYthon (PSOPY)
 
-This repository includes Python codes for different power system related problems.
+code = 'time_aggregation'
 
-## Installation
+#######################  UNIT COMMITMENT  ##########################
 
-```python
-git clone https://github.com/salvapineda/psopy.git
-```
+if code=='unit_commitment':
 
-## Unit Commitment
-
-Multi-period network-constrained unit-commitment problem as a mixed-integer linear programming problem
-
-```python
   # import system class
   from psopy import system
 
@@ -21,13 +13,11 @@ Multi-period network-constrained unit-commitment problem as a mixed-integer line
 
   # solve unit commitment
   sys1.solve_uc(solver='cplex',neos=True,network=True,commit=True,excel=True)
-```
 
-## Time Aggregation
+#######################  TIME AGGREGATION  ##########################
 
-Time period aggregation using representative days or chronological clustering
+if code=='time_aggregation':
 
-```python
   # import time_serie class
   from psopy import time_serie
 
@@ -39,4 +29,3 @@ Time period aggregation using representative days or chronological clustering
 
   # aggregated time series is plotted
   ts1.plot(1,168)
-```

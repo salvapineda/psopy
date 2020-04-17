@@ -49,9 +49,9 @@ Time period aggregation using representative days or chronological clustering [1
  
  Any feedback is welcome so feel free to ask or comment anything you want via a Pull Request in this repo. If you need extra help, you can ask Salvador Pineda (spinedamorente@gmail.com).
  
- ## Contributors 🌬☀
+ ## Contributors 
  
  * [OASYS group](http://oasys.uma.es) -  groupoasys@gmail.com
  
- ## Developed by 👨‍💻👨‍💻👩‍💻
+ ## Developed by 
  * [Salvador Pineda](https://www.researchgate.net/profile/Salvador_Pineda) - spinedamorente@gmail.com

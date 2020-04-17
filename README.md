@@ -12,7 +12,7 @@ cd psopy
 
 ## Unit Commitment
 
-Multi-period network-constrained unit-commitment problem as a mixed-integer linear programming problem
+Multi-period network-constrained unit-commitment problem as a mixed-integer linear programming problem [1]
 
 ```python
   # Import system class
@@ -27,7 +27,7 @@ Multi-period network-constrained unit-commitment problem as a mixed-integer line
 
 ## Time Aggregation
 
-Time period aggregation using representative days or chronological clustering [1]
+Time period aggregation using representative days or chronological clustering [2]
 
 ```python
   # Import time_serie class
@@ -42,7 +42,9 @@ Time period aggregation using representative days or chronological clustering [1
 
 ## References
 
-[1]  S. Pineda and J. M. Morales, "Chronological Time-Period Clustering for Optimal Capacity Expansion Planning With Storage," in IEEE Transactions on Power Systems, vol. 33, no. 6, pp. 7162-7170, Nov. 2018.
+[1] Gomez-Exposito, A., Conejo, A. J., & Canizares, C. (2018). Electric energy systems: analysis and operation. CRC press.
+
+[2]  S. Pineda and J. M. Morales, "Chronological Time-Period Clustering for Optimal Capacity Expansion Planning With Storage," in IEEE Transactions on Power Systems, vol. 33, no. 6, pp. 7162-7170, Nov. 2018.
 
 ## Do you want to contribute?
  

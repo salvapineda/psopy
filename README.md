@@ -15,13 +15,13 @@ cd psopy
 Multi-period network-constrained unit-commitment problem as a mixed-integer linear programming problem
 
 ```python
-  # import system class
+  # Import system class
   from psopy import system
 
-  # load system data
+  # Load system data. Further info: help(system)
   sys1 = system('data/3bus.xlsx',shed_cost=1000)
 
-  # solve unit commitment
+  # Solve unit commitment. Further info: help(system.solve_uc)
   sys1.solve_uc(solver='cplex',neos=True,network=True,commit=True,excel=True)
 ```
 
@@ -30,12 +30,11 @@ Multi-period network-constrained unit-commitment problem as a mixed-integer line
 Time period aggregation using representative days or chronological clustering [1]
 
 ```python
-  # Import pandas and time_serie class
-  import pandas as pd
+  # Import time_serie class
   from psopy import time_serie
 
-  # Create time_serie object from xlsx file. Further info: help(time_serie)
-  ts1 = time_serie(pd.read_excel('data/wind1.xlsx'))
+  # Create time_serie object. Further info: help(time_serie)
+  ts1 = time_serie('data/wind1.xlsx')
 
   # Time series is aggregated in 48 time periods according to chrono method. Further info: help(time_serie.agg)
   ts1.agg(nper=48,method='chrono',plot=True)

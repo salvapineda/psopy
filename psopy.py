@@ -18,15 +18,15 @@ class time_serie:
   A class to represent a time serie
   """
 
-  def __init__(self,data):
+  def __init__(self,xlsx_file):
     """
     Constructs all the necessary attributes for the time_serie object.
 
     Parameters
     ----------
-    data(dataframe): pandas data frame with time serie data
+    xlsx_file(str): name of the xlsx file with time serie data
     """
-    self.df = data
+    self.df = pd.read_excel(xlsx_file)
   
   def agg(self,nper=168,method='chrono',plot=False): 
     """
@@ -108,34 +108,32 @@ class time_serie:
 
 ############################ UNIT COMMITMENT ############################
 
-'''
-This Python code solves a multi-period network-constrained unit-commitment problem as a mixed-integer linear programming problem.
-
-The power system data must be provided using a .xlsx file with four different sheets:
-- gen: thermal unit data (location, cost, minimum and maximum output)
-- lin: line transmission data (susceptance and capacity)
-- dem: electricity demand at each node for each time period
-- ren: renewable electricity production at each node for each time period
-
-Results are provided in file output.xlsx. These results include the unit power production, unit commitment, power flows through the transmission lines, shed load and spilage of renewable production for each time period
-
-The options of the solve function are:
-- solver (default=CPLEX): the mixed-integer optimization software used to solve the model
-- neos (default=True): it allows the access to the solvers hosted in the NEOS server. More info [here](https://neos-server.org/neos/)
-- network (default=True): If True, the model is solved considering the network constraints. If False, the model is solved assuming that network congestion does not occur.
-- commit (default=True): If True, binary variables are used to model the on/off status of thermal units. If False, the minimum output of thermal units are disregarded and the model is solved as a linear model.
-
-The output file includes:
-- pro: production level of generating units
-- u: commitment status of generating units
-- flw: power flow through transmission lines
-- shd: load shedding at each but
-- spl: spillage of renewable generation at each bus
-'''
-
 class system:
+    """
+    A class to represent a power system
+    """
 
     def __init__(self,file_data,shed_cost=1000):
+        """
+        Constructs all the necessary attributes for the power system object.
+
+        Parameters
+        ----------
+        file_data(xlsx file): file including all data regarding the power system
+            - gen: sheet including generating unit data
+                - bus: but to which each unit is connected
+                - cost: linear marginal production cost
+                - min: minimum power output
+                - max: maximum power output
+            - lin: sheet including transmission line data
+                - from: origin bus
+                - to: destiny bus
+                - sus: line susceptance 
+                - cap: capacity limit of the line
+            - ren: sheet with renewable power production at each bus
+            - dem: sheet with power consmption at each bus
+        shed_cost(real, default=1000): load shedding cost
+        """
 
         self.file_data = file_data
 
@@ -151,6 +149,25 @@ class system:
         self.cs = shed_cost
 
     def solve_uc(self,solver='cplex',neos=True,network=True,commit=True,excel=True):
+        """
+        Solve the unit commitment problem as a mixed-integer linear programming problem
+
+        Parameters
+        ----------
+        - solver (str, default = 'cplex'): the mixed-integer optimization software used to solve the model
+        - neos (boolean, default = True): it allows the access to the solvers hosted in the NEOS server. More info [here](https://neos-server.org/neos/)
+        - network (boolean, default = True): If True, the model is solved considering the network constraints. If False, the model is solved assuming that network congestion does not occur.
+        - commit (boolean, default = True): If True, binary variables are used to model the on/off status of thermal units. If False, the minimum output of thermal units are disregarded and the model is solved as a linear model.
+        - excel (boolean, default = True): If True, results are saved in an excel file
+
+        Returns
+        -------
+        - pro (dataframe): production level of generating units
+        - u (dataframe): commitment status of generating units
+        - flw (dataframe): power flow through transmission lines
+        - shd (dataframe): load shedding at each but
+        - spl (dataframe): spillage of renewable generation at each bus
+        """  
 
         #Define the model
         m = pe.ConcreteModel()

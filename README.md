@@ -52,6 +52,8 @@ Time period aggregation using representative days or chronological clustering [1
  ## Contributors 
  
  * [OASYS group](http://oasys.uma.es) -  groupoasys@gmail.com
+ * [Asunción Jiménez Cordero](https://www.researchgate.net/profile/Asuncion_Jimenez-Cordero/research) - asuncionjc@uma.es
  
  ## Developed by 
+
  * [Salvador Pineda](https://www.researchgate.net/profile/Salvador_Pineda) - spinedamorente@gmail.com

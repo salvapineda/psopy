@@ -14,14 +14,42 @@ from sklearn.metrics.pairwise import pairwise_distances
 ############################ TIME AGGREGATION ############################
 
 class time_serie:
+  """
+  A class to represent a time serie
+  """
 
-  #Inizialization
-  def __init__(self,file_data):
-    self.file_data = file_data
-    self.df = pd.read_excel(file_data,sheet_name='input')
+  def __init__(self,data):
+    """
+    Constructs all the necessary attributes for the time_serie object.
+
+    Parameters
+    ----------
+    data(dataframe): pandas data frame with time serie data
+    """
+    self.df = data
   
-  #Agregate data
-  def agg(self,nper,method='chrono'): 
+  def agg(self,nper=168,method='chrono',plot=False): 
+    """
+    Aggregate the time serie data.
+
+    Parameters
+    ----------
+    nper(int, default = 168): number of time periods of the aggregated time serie
+    method(str, default = 'chrono'): method used to aggregate the time serie
+        - 'days': the original time series is aggregated using nper/24 represenative days
+        - 'weeks': the original time series is aggregated using nper/168 represenative weeks
+        - 'chrono': the original time series is aggregated using nper chronological periods of different durations
+    plot(boolean, default = 'False'): if True, it plots the comparison of the original time serie and the aggregated one
+
+    Returns
+    -------
+    aggregation(dataframe): aggregation results including
+        - value of the parameter for each aggregated time period
+        - tau: duration of the aggregated time period (equal to 1 for 'weeks' and 'days')
+        - weg: weight of the aggregated time period (equal to 1 for 'chrono')
+        - chr: chronologial information
+    approximation(dataframe): approximated time series according to the selected aggregation method
+    """  
 
     if method=='chrono':
       clus = 'chrono'
@@ -68,19 +96,15 @@ class time_serie:
       arr1 = np.column_stack((arr1,np.zeros(nclus*dur)))    
       arr1[np.array(range(0,nclus*dur,dur)),-1] = np.array(range(0,nclus*dur,dur))-1+dur       
   
-    self.df1 = pd.DataFrame(arr1,columns=np.append(self.df.columns.values,('tau','weg','chr')))
-    self.df2 = pd.DataFrame(arr2,columns=self.df.columns)
-    with pd.ExcelWriter(self.file_data[:-5]+'_output.xlsx') as writer:
-        self.df1.to_excel(writer,'agg1')
-        self.df2.to_excel(writer,'agg2')
+    self.aggregation = pd.DataFrame(arr1,columns=np.append(self.df.columns.values,('tau','weg','chr')))
+    self.approximation = pd.DataFrame(arr2,columns=self.df.columns)
 
-  # Plot
-  def plot(self,plot_start,plot_end):
-    for k in self.df2.columns:
-      df3 = pd.concat([self.df[k].loc[plot_start:plot_end],self.df2[k].loc[plot_start:plot_end]],axis=1)   
-      df3.columns = ['original', 'aggregated']     
-      df3.plot(title=k)   
-      plt.show()
+    if plot:
+      for k in self.approximation.columns:
+        df3 = pd.concat([self.df[k],self.approximation[k]],axis=1)   
+        df3.columns = ['original', 'aggregated']     
+        df3.plot(title=k)   
+        plt.show()
 
 ############################ UNIT COMMITMENT ############################
 

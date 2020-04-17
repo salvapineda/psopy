@@ -18,14 +18,13 @@ if code=='unit_commitment':
 
 if code=='time_aggregation':
 
-  # import time_serie class
+  # Import pandas and time_serie class
+  import pandas as pd
   from psopy import time_serie
 
-  # load wind time series
-  ts1 = time_serie('data/wind1.xlsx')
+  # Create time_serie object from xlsx file. Further info: help(time_serie)
+  ts1 = time_serie(pd.read_excel('data/wind1.xlsx'))
 
-  # time series is aggregated
-  ts1.agg(48,method='chrono')
+  # Time series is aggregated in 48 time periods according to chrono method. Further info: help(time_serie.agg)
+  ts1.agg(nper=48,method='chrono',plot=True)
 
-  # aggregated time series is plotted
-  ts1.plot(1,168)

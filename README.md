@@ -27,18 +27,31 @@ Multi-period network-constrained unit-commitment problem as a mixed-integer line
 
 ## Time Aggregation
 
-Time period aggregation using representative days or chronological clustering
+Time period aggregation using representative days or chronological clustering [1]
 
 ```python
-  # import time_serie class
+  # Import pandas and time_serie class
+  import pandas as pd
   from psopy import time_serie
 
-  # load wind time series
-  ts1 = time_serie('data/wind1.xlsx')
+  # Create time_serie object from xlsx file. Further info: help(time_serie)
+  ts1 = time_serie(pd.read_excel('data/wind1.xlsx'))
 
-  # time series is aggregated
-  ts1.agg(48,method='chrono')
-
-  # aggregated time series is plotted
-  ts1.plot(1,168)
+  # Time series is aggregated in 48 time periods according to chrono method. Further info: help(time_serie.agg)
+  ts1.agg(nper=48,method='chrono',plot=True)
 ```
+
+## References
+
+[1]  S. Pineda and J. M. Morales, "Chronological Time-Period Clustering for Optimal Capacity Expansion Planning With Storage," in IEEE Transactions on Power Systems, vol. 33, no. 6, pp. 7162-7170, Nov. 2018.
+
+## Do you want to contribute?
+ 
+ Any feedback is welcome so feel free to ask or comment anything you want via a Pull Request in this repo. If you need extra help, you can ask Salvador Pineda (spinedamorente@gmail.com).
+ 
+ ## Contributors 🌬☀
+ 
+ * [OASYS group](http://oasys.uma.es) -  groupoasys@gmail.com
+ 
+ ## Developed by 👨‍💻👨‍💻👩‍💻
+ * [Salvador Pineda](https://www.researchgate.net/profile/Salvador_Pineda) - spinedamorente@gmail.com

@@ -122,7 +122,8 @@ class system:
         file_data(xlsx file): file including all data regarding the power system
             - gen: sheet including generating unit data
                 - bus: but to which each unit is connected
-                - cost: linear marginal production cost
+                - a: quadratic production cost
+                - b: linear production cost
                 - min: minimum power output
                 - max: maximum power output
             - lin: sheet including transmission line data
@@ -197,7 +198,7 @@ class system:
 
         #Definition cost
         def cost_def_rule(m):
-            return m.z == sum(self.gen['cost'][g]*m.pro[g,t] for g in m.g for t in m.t) + sum(self.cs*m.shd[b,t] for b in m.b for t in m.t)
+            return m.z == sum(self.gen['a'][g]*m.pro[g,t]*m.pro[g,t] + self.gen['b'][g]*m.pro[g,t] for g in m.g for t in m.t) + sum(self.cs*m.shd[b,t] for b in m.b for t in m.t)
         m.cost_def = pe.Constraint(rule=cost_def_rule)
 
         #Energy balance
